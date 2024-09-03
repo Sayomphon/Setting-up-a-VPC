@@ -101,11 +101,11 @@ resource "aws_subnet" "public_subnet_1" {
   }
 }
 ```
-    - **resource "aws_subnet" "public_subnet_1"**: This block creates the first public subnet.
-    - **vpc_id**: Specifies the ID of the VPC to which this subnet belongs, linking it to the VPC created in Task 1.
-    - **cidr_block**: Defines the range of IP addresses available for this subnet. The value "10.1.1.0/24" allows for 256 IP addresses.
-    - **availability_zone**: Designates the AWS Availability Zone where the subnet will be located; here, it's set to "us-west-2a," but this can be adjusted as required.
-    - **tags**: Assigns a descriptive name ("Public Subnet 1") for easier identification in the AWS console.
+  - **resource "aws_subnet" "public_subnet_1"**: This block creates the first public subnet.
+  - **vpc_id**: Specifies the ID of the VPC to which this subnet belongs, linking it to the VPC created in Task 1.
+  - **cidr_block**: Defines the range of IP addresses available for this subnet. The value "10.1.1.0/24" allows for 256 IP addresses.
+  - **availability_zone**: Designates the AWS Availability Zone where the subnet will be located; here, it's set to "us-west-2a," but this can be adjusted as required.
+  - **tags**: Assigns a descriptive name ("Public Subnet 1") for easier identification in the AWS console.
 #### 2. Creating Public Subnet 2
 ```hcl
 resource "aws_subnet" "public_subnet_2" {
@@ -117,6 +117,9 @@ resource "aws_subnet" "public_subnet_2" {
   }
 }
 ```
+  - **resource "aws_subnet" "public_subnet_2"** : Similar to Public Subnet 1, this block creates a second public subnet.
+  - **cidr_block**: Uses a different CIDR block ("10.1.2.0/24") to expand the range of available IPs.
+  - **availability_zone**: This subnet resides in "us-west-2b," providing redundancy across different zones.
 #### 3. Creating Private Subnet 1
 ```hcl
 resource "aws_subnet" "private_subnet_1" {
@@ -128,6 +131,9 @@ resource "aws_subnet" "private_subnet_1" {
   }
 }
 ```
+  - **resource "aws_subnet" "private_subnet_1"**: This block creates the first private subnet.
+  - Similar to the public subnets, it links to the VPC and establishes its own CIDR block ("10.1.3.0/24").
+  - **availability_zone**: Designates "us-west-2a" for the private subnet's location, supporting a layered architecture.
 #### 4. Creating Private Subnet 2
 ```hcl
 resource "aws_subnet" "private_subnet_2" {
@@ -139,6 +145,9 @@ resource "aws_subnet" "private_subnet_2" {
   }
 }
 ```
+  - **resource "aws_subnet" "private_subnet_2"**: This block establishes the second private subnet.
+  - **cidr_block**: Uses "10.1.4.0/24" for addressing.
+  - **availability_zone**: Placed in "us-west-2b" to ensure availability across multiple zones.
 #### 5. Enabling Auto-assign Public IP for Public Subnets
 ```hcl
 resource "aws_subnet_public_ip" "public_subnet_1_auto_assign" {
@@ -151,3 +160,6 @@ resource "aws_subnet_public_ip" "public_subnet_2_auto_assign" {
   map_public_ip_on_launch = true
 }
 ```
+  - **resource "aws_subnet_public_ip"**: These blocks enable automatic assignment of Public IP addresses for the public subnets when EC2 instances are launched within them.
+  - **subnet_id**: Specifies which public subnet should have this setting apply.
+  - **map_public_ip_on_launch**: Set to ***true***, this option ensures that instances launched in these subnets receive public IP addresses, making them accessible from the internet.
