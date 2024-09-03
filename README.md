@@ -9,8 +9,8 @@ In this task, you will create a new VPC.
 3. In the navigation pane, under **Virtual private cloud**, choose **Your VPCs**.
 4. Choose **Create VPC**.
 5. Configure these settings:
-  - **Name tag**: app-vpc
-  - **IPv4 CIDR block**: 10.1.0.0/16
+    - **Name tag**: app-vpc
+    - **IPv4 CIDR block**: 10.1.0.0/16
 6. Choose **Create VPC**.
 7. In the navigation pane, under **Virtual private cloud**, choose **Internet gateways**
 8. Choose **Create internet gateway**.
@@ -19,3 +19,11 @@ In this task, you will create a new VPC.
 11. For **Available VPCs**, choose app-vpc and then choose **Attach internet gateway**.
 
 ### Setting by Terraform
+#### 1. Provider Block
+```hcl
+provider "aws" {
+  region = "ap-southeast-1" # Specify the AWS region
+}
+```
+  - **provider "aws"**: This block specifies the cloud provider being used, which in this case is AWS (Amazon Web Services).
+  - **region**: This attribute defines the specific geographic region where the resources will be created. Here, it's set to **ap-southeast-1**, which represents the Oregon region.
