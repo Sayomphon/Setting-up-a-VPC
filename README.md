@@ -193,3 +193,78 @@ Next, you will create the private route table.
 16. Choose the **Subnet associations tab**.
 17. Scroll to **Subnets without explicit associations** and choose **Edit subnet associations**.
 18. Select the two private subnets (**Private Subnet 1** and **Private Subnet 2**) and choose **Save associations**.
+
+### Setting by Terraform
+#### 1. Creating the Public Route Table
+```hcl
+resource "aws_route_table" "public_route_table" {
+  vpc_id = aws_vpc.app_vpc.id # Attach the route table to the VPC
+  tags = {
+    Name = "app-routetable-public" # Tag the route table for identification
+  }
+}
+```
+  - **resource "aws_route_table" "public_route_table"**: This block creates a new route table specifically for managing routing for public subnets.
+  - **vpc_id**: Links the route table to the VPC created in Task 1, ensuring that routing rules apply within the correct network context.
+  - **tags**: Provides a human-readable name ("app-routetable-public") for easier identification and management in the AWS Console.
+#### 2. Creating the Route for the Public Route Table
+```hcl
+resource "aws_route" "public_route" {
+  route_table_id         = aws_route_table.public_route_table.id
+  destination_cidr_block = "0.0.0.0/0" # Routes all outbound traffic
+  gateway_id             = aws_internet_gateway.app_igw.id # Use the Internet Gateway
+}
+```
+  - **resource "aws_route" "public_route"**: This block establishes a specific route within the public route table.
+  - **route_table_id**: References the public route table created previously, linking this route to that table.
+  - **destination_cidr_block**: Set to "0.0.0.0/0", this allows all outbound traffic to reach any IP address on the internet.
+  - **gateway_id**: Identifies the Internet Gateway (created in Task 1) which the route will use to allow outbound internet access for instances in the public subnets.
+#### 3. Associating Public Subnet 1 with the Public Route Table
+```hcl
+resource "aws_route_table_association" "public_subnet_1_association" {
+  subnet_id      = aws_subnet.public_subnet_1.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+```
+  - **resource "aws_route_table_association" "public_subnet_1_association"**: This block links the first public subnet with the public route table.
+  - **subnet_id**: Specifies the public subnet created in Task 2, allowing it to utilize the routing rules defined in the public route table.
+  - **route_table_id**: References the public route table, establishing the association.
+#### 4. Associating Public Subnet 2 with the Public Route Table
+```hcl
+resource "aws_route_table_association" "public_subnet_2_association" {
+  subnet_id      = aws_subnet.public_subnet_2.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+```
+  - **resource "aws_route_table_association" "public_subnet_2_association"**: Similar to the previous block, this piece associates the second public subnet with the same public route table.
+  - This ensures that instances launched within Public Subnet 2 can also access the defined routes in the public route table.
+#### 5. Creating the Private Route Table
+```hcl
+resource "aws_route_table" "private_route_table" {
+  vpc_id = aws_vpc.app_vpc.id # Attach the route table to the VPC
+  tags = {
+    Name = "app-routetable-private" # Tag the route table for identification
+  }
+}
+```
+  - **resource "aws_route_table" "private_route_table"**: This block establishes a new route table for the private subnets.
+  - **vpc_id**: Links it to the VPC created in Task 1, ensuring proper routing management.
+  - **tags**: Provides identification for the route table, naming it "app-routetable-private".
+#### 6. Associating Private Subnet 1 with the Private Route Table
+```hcl
+resource "aws_route_table_association" "private_subnet_1_association" {
+  subnet_id      = aws_subnet.private_subnet_1.id
+  route_table_id = aws_route_table.private_route_table.id
+}
+```
+  - **resource "aws_route_table_association" "private_subnet_1_association"**: This block associates the first private subnet with the private route table.
+  - Instances residing in this subnet will refer to this route table when determining how to respond to incoming and outgoing network traffic.
+#### 7. Associating Private Subnet 2 with the Private Route Table
+```hcl
+resource "aws_route_table_association" "private_subnet_2_association" {
+  subnet_id      = aws_subnet.private_subnet_2.id
+  route_table_id = aws_route_table.private_route_table.id
+}
+```
+  - **resource "aws_route_table_association" "private_subnet_2_association"**: This block completes the routing setup by associating the second private subnet with the private route table.
+  - Similar to the previous association, it ensures that instances in Private Subnet 2 follow the routing rules defined in the private route table.
