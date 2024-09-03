@@ -88,3 +88,66 @@ In this task, you will create the four subnets for your VPC. You will configure 
 12. Clear the check box for **Public Subnet 1** and select the check box for **Public Subnet 2**.
 13. Again, choose **Actions** and then **Edit subnet settings**.
 14. For **Auto-assign IP settings**, select **Enable auto-assign public IPv4 address** and save the settings.
+
+### Setting by Terraform
+#### 1. Creating Public Subnet 1
+```hcl
+resource "aws_subnet" "public_subnet_1" {
+  vpc_id            = aws_vpc.app_vpc.id
+  cidr_block        = "10.1.1.0/24"
+  availability_zone = "ap-southeast-2a" # Change according to your preference
+  tags = {
+    Name = "Public Subnet 1" # Tag the subnet for identification
+  }
+}
+```
+    - **resource "aws_subnet" "public_subnet_1"**: This block creates the first public subnet.
+    - **vpc_id**: Specifies the ID of the VPC to which this subnet belongs, linking it to the VPC created in Task 1.
+    - **cidr_block**: Defines the range of IP addresses available for this subnet. The value "10.1.1.0/24" allows for 256 IP addresses.
+    - **availability_zone**: Designates the AWS Availability Zone where the subnet will be located; here, it's set to "us-west-2a," but this can be adjusted as required.
+    - **tags**: Assigns a descriptive name ("Public Subnet 1") for easier identification in the AWS console.
+#### 2. Creating Public Subnet 2
+```hcl
+resource "aws_subnet" "public_subnet_2" {
+  vpc_id            = aws_vpc.app_vpc.id
+  cidr_block        = "10.1.2.0/24"
+  availability_zone = "ap-southeast-2b" # Change according to your preference
+  tags = {
+    Name = "Public Subnet 2" # Tag the subnet for identification
+  }
+}
+```
+#### 3. Creating Private Subnet 1
+```hcl
+resource "aws_subnet" "private_subnet_1" {
+  vpc_id            = aws_vpc.app_vpc.id
+  cidr_block        = "10.1.3.0/24"
+  availability_zone = "ap-southeast-2a" # Change according to your preference
+  tags = {
+    Name = "Private Subnet 1" # Tag the subnet for identification
+  }
+}
+```
+#### 4. Creating Private Subnet 2
+```hcl
+resource "aws_subnet" "private_subnet_2" {
+  vpc_id            = aws_vpc.app_vpc.id
+  cidr_block        = "10.1.4.0/24"
+  availability_zone = "ap-southeast-2b" # Change according to your preference
+  tags = {
+    Name = "Private Subnet 2" # Tag the subnet for identification
+  }
+}
+```
+#### 5. Enabling Auto-assign Public IP for Public Subnets
+```hcl
+resource "aws_subnet_public_ip" "public_subnet_1_auto_assign" {
+  subnet_id = aws_subnet.public_subnet_1.id
+  map_public_ip_on_launch = true
+}
+
+resource "aws_subnet_public_ip" "public_subnet_2_auto_assign" {
+  subnet_id = aws_subnet.public_subnet_2.id
+  map_public_ip_on_launch = true
+}
+```
