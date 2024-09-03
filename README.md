@@ -163,3 +163,33 @@ resource "aws_subnet_public_ip" "public_subnet_2_auto_assign" {
   - **resource "aws_subnet_public_ip"**: These blocks enable automatic assignment of Public IP addresses for the public subnets when EC2 instances are launched within them.
   - **subnet_id**: Specifies which public subnet should have this setting apply.
   - **map_public_ip_on_launch**: Set to ***true***, this option ensures that instances launched in these subnets receive public IP addresses, making them accessible from the internet.
+
+## Task 3: Creating route tables
+### Setting by AWS Management Console
+In this task, you will create the route tables for your VPC.
+First, you will create the public route table.
+1. In the navigation pane, choose **Route Tables**.
+2. Choose **Create route table**.
+3. For the route table, configure these settings:
+    - **Name**: app-routetable-public
+    - **VPC**: app-vpc
+4. Choose **Create route table**.
+5. If needed, open the route table details pane by choosing **app-routetable-public** from the list.
+6. Choose the **Routes** tab and choose **Edit routes**.
+7. Choose **Add route** and configure these settings:
+    - **Destination**: ***0.0.0.0/0***
+    - **Target**: Internet Gateway, then choose app-igw (which you set up in the VPC task)
+8. Choose **Save changes**.
+9. Choose the **Subnet associations** tab.
+10. Scroll to **Subnets without explicit associations** and choose **Edit subnet associations**.
+11. Select the two public subnets that you created (**Public Subnet 1** and **Public Subnet 2**) and choose **Save associations**.
+Next, you will create the private route table.
+12. In the navigation pane, choose **Route Tables**.
+13. Choose **Create route table** and configure these settings:
+    - **Name**: ***app-routetable-private***
+    - **VPC**: ***app-vpc***
+14. Choose **Create route table**.
+15. If needed, open the details pane for **app-routetable-private** by choosing it from the list.
+16. Choose the **Subnet associations tab**.
+17. Scroll to **Subnets without explicit associations** and choose **Edit subnet associations**.
+18. Select the two private subnets (**Private Subnet 1** and **Private Subnet 2**) and choose **Save associations**.
