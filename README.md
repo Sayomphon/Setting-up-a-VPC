@@ -311,6 +311,7 @@ This example uses the US West (Oregon) Region, or us-west-2.
 export AWS_DEFAULT_REGION=us-west-2
 ```
 **Note**: You still don’t need to change the ***SUB_PHOTOS_BUCKET*** variable in the user data script. You will update this placeholder in a later lab.
+
 15. Choose **Launch instance**.
 16. Choose **View all instances**.
 The instance should now be listed under **Instances**.
