@@ -316,9 +316,11 @@ export AWS_DEFAULT_REGION=us-west-2
 16. Choose **View all instances**.
 The instance should now be listed under **Instances**.
 17. Wait for the **Instance state** to change to ***Running*** and the **Status check** to change to 2/2 checks passed.
+
 **Note**: Often, the status checks update, but the console user interface (UI) might not update to reflect the most recent information. You can minimize waiting by refreshing the page after a few minutes.
 18. Select the running **employee-directory-app instance** by selecting its check box.
 19. On the **Details** tab, copy the **Public IPv4 address**.
+
 **Note**: Make sure that you only copy the address instead of choosing the open address link.
 20. In a new browser window, paste the IP address that you copied. ***Make sure to remove the ‘S’ after HTTP so you are using only HTTP instead***.
 21. In a new browser window, paste the IP address that you copied.
